@@ -1,0 +1,15 @@
+C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\bin\Debug\Desktop.exe.config
+C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\obj\Debug\Desktop.csprojResolveAssemblyReference.cache
+C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\obj\Debug\MainWindow.baml
+C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\obj\Debug\MainWindow.g.cs
+C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\obj\Debug\App.g.cs
+C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\obj\Debug\Desktop_MarkupCompile.cache
+C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\obj\Debug\Desktop.g.resources
+C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\obj\Debug\Desktop.Properties.Resources.resources
+C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\obj\Debug\Desktop.csproj.GenerateResource.Cache
+C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\bin\Debug\Desktop.exe
+C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\bin\Debug\Desktop.pdb
+C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\bin\Debug\Classes.dll
+C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\bin\Debug\Classes.pdb
+C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\obj\Debug\Desktop.exe
+C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\obj\Debug\Desktop.pdb
