@@ -2,26 +2,123 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="600" Width="1024">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="416*"/>
-            <ColumnDefinition Width="89*"/>
-            <ColumnDefinition Width="167*"/>
-            <ColumnDefinition Width="246*"/>
-            <ColumnDefinition Width="98*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="43*"/>
-            <RowDefinition Height="213*"/>
-            <RowDefinition Height="24*"/>
-            <RowDefinition Height="289*"/>
-        </Grid.RowDefinitions>
-        <Label Content="Educations" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="67"/>
-        <DataGrid Name="Educations" Grid.Row="1" Grid.ColumnSpan="4" AutoGenerateColumns="True"/>
-        <Label Content="Students" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top" Height="26" Width="57" Grid.RowSpan="2"/>
-        <Label Content="Exams" Grid.Column="2" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top" Height="26" Width="43" Grid.RowSpan="2"/>
-        <DataGrid Grid.Row="3" Name="Students"/>
-        <DataGrid Grid.Column="2"  Grid.Row="3" Grid.ColumnSpan="2"/>
 
-    </Grid>
+    <TabControl Margin="5">
+        <TabItem Header="Overview">
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="433*"/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="174*"/>
+                    <ColumnDefinition Width="257*"/>
+                    <ColumnDefinition Width="80"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="215*"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="293*"/>
+                </Grid.RowDefinitions>
+                <Label Content="Educations" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="67"/>
+                <ListBox Name="Educations" Grid.Row="1" Grid.ColumnSpan="4" SelectionMode="Single" SelectionChanged="OnEducationsSelectionChanged" />
+                <Label Content="Students" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top" Height="26" Width="57" Grid.RowSpan="2"/>
+                <Label Content="Exams" Grid.Column="2" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top" Height="26" Width="43" Grid.RowSpan="2"/>
+                <DataGrid Grid.Row="3" Name="Students" SelectionMode="Single" IsReadOnly="True" SelectionChanged="StudentsSelectionChanged" AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" Width="90*"/>
+                        <DataGridTextColumn Header="CPR" Binding="{Binding Path=CPR}" Width="60*"/>
+                        <DataGridTextColumn Header="Start Date" Binding="{Binding Path=Start}" Width="60*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <ListBox Grid.Column="2"  Grid.Row="3" Grid.ColumnSpan="2" Name="Exams" SelectionMode="Single" SelectionChanged="ExamsSelectionChanged" />
+                <StackPanel Grid.Column="5" Grid.Row="1" Margin="5,0" >
+                    <Button Content="Create" Click="CreateEducationClick"/>
+                    <Button Content="Edit" IsEnabled="False" Click="EditEducationClick" Name="EditEducationButton" Margin="0,5,0,0"/>
+                    <Button Content="Delete" IsEnabled="False" Click="DeleteEducationClick" Name="DeleteEducationButton" Margin="0,5,0,0"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Grid.Row="3" Margin="5,0">
+                    <Button Content="Show" IsEnabled="False" Click="ShowStudentClick" Name="ShowStudentButton"/>
+                    <Button Content="Create" Margin="0,5,0,0" Name="CreateStudentButton" IsEnabled="False" Click="CreateStudentClick" />
+                    <Button Content="Edit" Margin="0,5,0,0" IsEnabled="False" Name="EditStudentButton" Click="EditStudentClick"/>
+                    <Button Content="Delete" Margin="0,5,0,0" IsEnabled="False" Name="DeleteStudentButton" Click="DeleteStudentClick"/>
+                    <Button x:Name="RegisterStudent" Content="Register" Margin="0,5,0,0" IsEnabled="False" Click="RegisterStudentClick" />
+                    <Button Content="Exception" Margin="0,5,0,0" IsEnabled="False" Name="GiveExceptionButton" Click="RegisterStudentClick"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="4" Grid.Row="3" Margin="5,0">
+                    <Button Content="Create" Name="CreateExamButton" IsEnabled="False" Click="CreateExamClick"/>
+                    <Button Content="Edit" Margin="0,5,0,0" IsEnabled="False" Name="EditExamButton" Click="EditExamClick"/>
+                    <Button Content="Delete" Margin="0,5,0,0" IsEnabled="False" Name="DeleteExamButton" Click="DeleteExamClick"/>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Exam">
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="170*"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="249*"/>
+                    <RowDefinition Height="60"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="90*"/>
+                    <ColumnDefinition Width="346*"/>
+                    <ColumnDefinition Width="69*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Content="Education"/>
+                <ListBox Name="ExamEducations" Grid.Row="1" SelectionChanged="ExamEducationsSelectionChanged"/>
+
+                <Label Content="Exam" Grid.Row="2"/>
+                <ListBox Name="ExamExams" Grid.Row="3" Grid.RowSpan="2" SelectionChanged="ExamExamsSelectionChanged"/>
+                <Label Content="Attempts" Grid.Column="1" Grid.ColumnSpan="2"/>
+                <StackPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="4" Name="ExamAttempts" Grid.ColumnSpan="2" />
+                <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Horizontal" >
+                    <StackPanel Width="30" Margin="10,0,0,0">
+                        <Label Content="SY" HorizontalAlignment="Center"/>
+                        <TextBox TextWrapping="Wrap" Name="ExamSY" PreviewTextInput="AllowOnlyNumbers" />
+                    </StackPanel>
+                    <StackPanel Width="30" Margin="10,0,0,0">
+                        <Label Content="EJ" HorizontalAlignment="Center"/>
+                        <TextBox TextWrapping="Wrap" Name="ExamEJ" PreviewTextInput="AllowOnlyNumbers" />
+                    </StackPanel>
+                    <StackPanel Width="30" Margin="10,0,0,0">
+                        <Label Content="-3" HorizontalAlignment="Center"/>
+                        <TextBox TextWrapping="Wrap" Name="ExamN3" PreviewTextInput="AllowOnlyNumbers" />
+                    </StackPanel>
+                    <StackPanel Width="30" Margin="10,0,0,0">
+                        <Label Content="00" HorizontalAlignment="Center"/>
+                        <TextBox TextWrapping="Wrap" Name="Exam00" PreviewTextInput="AllowOnlyNumbers" />
+                    </StackPanel>
+                    <StackPanel Width="30" Margin="10,0,0,0">
+                        <Label Content="02" HorizontalAlignment="Center"/>
+                        <TextBox TextWrapping="Wrap" Name="Exam02" PreviewTextInput="AllowOnlyNumbers" />
+                    </StackPanel>
+                    <StackPanel Width="30" Margin="10,0,0,0">
+                        <Label Content="4" HorizontalAlignment="Center"/>
+                        <TextBox TextWrapping="Wrap" Name="Exam4" PreviewTextInput="AllowOnlyNumbers" />
+                    </StackPanel>
+                    <StackPanel Width="30" Margin="10,0,0,0">
+                        <Label Content="7" HorizontalAlignment="Center"/>
+                        <TextBox TextWrapping="Wrap" Name="Exam7" PreviewTextInput="AllowOnlyNumbers" />
+                    </StackPanel>
+                    <StackPanel Width="30" Margin="10,0,0,0">
+                        <Label Content="10" HorizontalAlignment="Center"/>
+                        <TextBox TextWrapping="Wrap" Name="Exam10" PreviewTextInput="AllowOnlyNumbers" />
+                    </StackPanel>
+                    <StackPanel Width="30" Margin="10,0,0,0">
+                        <Label Content="12" HorizontalAlignment="Center"/>
+                        <TextBox TextWrapping="Wrap" Name="Exam12" PreviewTextInput="AllowOnlyNumbers" />
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Column="2" Grid.Row="4" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                    <Button Content="Complete" Click="CompleteExamClick"/>
+                    <Button Content="Clear" Margin="5,0,0,0" Click="Clear"/>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+    </TabControl>
+
+
 </Window>

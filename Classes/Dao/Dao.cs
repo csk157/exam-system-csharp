@@ -11,8 +11,10 @@ namespace Classes.Dao
 {
     public class Dao
     {
+        private SqlConnection con;
         private DataSet data;
         public DataSet Data { get { return data; } set { } }
+        private Dictionary<string, SqlDataAdapter> adapters;
         private static string[] tables = {"Attempts", "Exams", "Students", "Educations"};
         private static string connStr = @"Data Source=localhost\SQLEXPRESS; database=grades_system; Integrated Security=true;";
         private static Dao instance;
@@ -32,7 +34,9 @@ namespace Classes.Dao
 
 
         private Dao() {
+            con = new SqlConnection(connStr);
             data = new DataSet();
+            adapters = new Dictionary<string, SqlDataAdapter>();
             LoadData();
 
             data.Relations.Add("EducationStudents", data.Tables["Educations"].Columns["id"], data.Tables["Students"].Columns["education_id"]);
@@ -40,25 +44,44 @@ namespace Classes.Dao
             data.Relations.Add("ExamAttempts", data.Tables["Exams"].Columns["id"], data.Tables["Attempts"].Columns["exam_id"]);
             data.Relations.Add("StudentAttempts", data.Tables["Students"].Columns["id"], data.Tables["Attempts"].Columns["student_id"]);
 
-            Console.WriteLine(data.Tables["Educations"].Rows[0].GetChildRows("EducationStudents")[0][1]);
+            data.AcceptChanges();
         }
 
         public void LoadData()
         {
-            using (SqlConnection con = new SqlConnection(connStr))
-            {
                 foreach(string table in tables){
                     string sql = "SELECT * FROM " + table;
                     AddToDataSet(table, sql, con);
                 }
-            }
+        }
+
+        public void UpdateData()
+        {
+            foreach(string t in tables)
+                adapters[t].Update(data, t);
+        }
+
+        public void UpdateTable(string table)
+        {
+            adapters[table].Update(data, table);
         }
 
         private void AddToDataSet(string table, string sql, SqlConnection con)
         {
             SqlCommand cmd = new SqlCommand(sql, con);
-            SqlDataAdapter da = new SqlDataAdapter(cmd);
-            da.Fill(data, table);
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            adapters.Add(table, adapter);
+            SqlCommandBuilder cb = new SqlCommandBuilder(adapter);
+            adapter.DeleteCommand = cb.GetDeleteCommand(true);
+            adapter.UpdateCommand = cb.GetUpdateCommand(true);
+            adapter.InsertCommand = cb.GetInsertCommand(true);
+
+            adapter.Fill(data, table);
+
+            // Define autoincrement
+            data.Tables[table].Columns[0].AutoIncrement = true;
+            data.Tables[table].Columns[0].AutoIncrementSeed = (data.Tables[table].Rows.Count > 0) ? ((int) data.Tables[table].Rows[data.Tables[table].Rows.Count - 1][0] +1) : 1;
+            data.Tables[table].Columns[0].AutoIncrementStep = 1;
         }
 
         public DataSet GetAllEducations()

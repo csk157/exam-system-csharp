@@ -1,0 +1,14 @@
+﻿<Window x:Class="Desktop.CreateEditEducation"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CreateEditEducation" Height="300" Width="300">
+        <StackPanel>
+            <Label Content="Title"/>
+        <TextBox Name="Title" Height="23" TextWrapping="Wrap" Text="{Binding Path=Title}"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
+            <Button Content="Save" Width="75" Click="Save"/>
+            <Button Content="Cancel" Width="75" Click="Cancel"/>
+        </StackPanel>
+    </StackPanel>
+
+</Window>

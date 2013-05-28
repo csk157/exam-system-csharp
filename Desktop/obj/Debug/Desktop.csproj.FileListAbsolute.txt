@@ -13,3 +13,11 @@ C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\bin\Debug\Classes.dll
 C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\bin\Debug\Classes.pdb
 C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\obj\Debug\Desktop.exe
 C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\obj\Debug\Desktop.pdb
+C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\obj\Debug\CreateEditEducation.baml
+C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\obj\Debug\CreateEditEducation.g.cs
+C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\obj\Debug\ShowStudent.baml
+C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\obj\Debug\ShowStudent.g.cs
+C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\obj\Debug\CreateEditStudent.baml
+C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\obj\Debug\CreateEditStudent.g.cs
+C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\obj\Debug\CreateEditExam.baml
+C:\Users\Ceslovas\GradesRegistrationSystem\Desktop\obj\Debug\CreateEditExam.g.cs

@@ -1,0 +1,19 @@
+﻿<Window x:Class="Desktop.CreateEditStudent"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CreateEditStudent" Height="418" Width="300" Closed="ClosedWindow">
+    <StackPanel Margin="5,0,5,5">
+        <Label Content="Name"/>
+        <TextBox Height="23" TextWrapping="Wrap" Text="{Binding Path=Name, ValidatesOnDataErrors=True}" ToolTip="{Binding Path=(Validation.Errors).CurrentItem.ErrorContent, RelativeSource={x:Static RelativeSource.Self}}" />
+        <Label Content="CPR"/>
+        <TextBox Height="23" Name="CPR" TextWrapping="Wrap" Text="{Binding Path=CPR, ValidatesOnDataErrors=True}" ToolTip="{Binding Path=(Validation.Errors).CurrentItem.ErrorContent, RelativeSource={x:Static RelativeSource.Self}}"/>
+        <Label Content="Start"/>
+        <Calendar SelectedDate="{Binding Path=Start, ValidatesOnDataErrors=True}" ToolTip="{Binding Path=(Validation.Errors).CurrentItem.ErrorContent, RelativeSource={x:Static RelativeSource.Self}}" />
+        <Label Content="Education"/>
+        <ComboBox Name="Education" SelectedValue="{Binding Path=Education}" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+            <Button Content="Save" Width="75" Click="Save"/>
+            <Button Content="Cancel" Width="75" Margin="5,0,0,0" Click="Cancel"/>
+        </StackPanel>
+    </StackPanel>
+</Window>
