@@ -84,27 +84,58 @@ namespace Classes.Model
             return count != 0;
         }
 
+        public bool HasFailedExam(Exam e)
+        {
+            int count = (from at in Attempts where at.Exam == e && !at.IsPassed() select at).ToArray().Length;
+            return count != 0;
+        }
+
         public bool HasPassedExam(Exam e)
         {
             int count = (from at in Attempts where at.Exam == e && at.IsPassed() select at).ToArray().Length;
             return count != 0;
         }
 
-        public bool NeedsException(Exam e)
+        public bool NeedsExemption(Exam e)
         {
-            int count = (from at in Attempts where at.Exam == e && !at.IsPassed() && at.Happened() && at.IsTaken() select at).ToArray().Length;
+            int count = (from at in Attempts where at.Exam == e && !at.IsPassed() && at.Happened() && at.IsTaken() && !HasRegisteredForExam(e) select at).ToArray().Length;
             return count >= 3;
         }
 
         public bool CanRegisterForExam(Exam e)
         {
-            return !HasRegisteredForExam(e) && !HasPassedExam(e) && !NeedsException(e);
+            return !HasRegisteredForExam(e) && !HasPassedExam(e) && !NeedsExemption(e);
         }
 
-        public bool CanGetException(Exam e)
+        public bool CanGetExemption(Exam e)
         {
             int count = (from at in Attempts where at.Exam == e && !at.IsPassed() && at.Happened() && at.IsTaken() select at).ToArray().Length;
             return count < 6;
+        }
+
+        public IEnumerable<Attempt> GetFailedAttempts()
+        {
+            return  (from at in Attempts where !at.IsPassed() && at.Happened() && at.IsTaken() select at);
+        }
+
+        public IEnumerable<Exam> GetFailedExams()
+        {
+            return (from at in GetFailedAttempts() select at.Exam).Distinct();
+        }
+
+        public IEnumerable<Exam> GetExamsNeedingExemptions()
+        {
+            return (from ex in GetFailedExams() where this.NeedsExemption(ex) && !this.HasRegisteredForExam(ex) select ex);
+        }
+
+        public bool RequiresExemptions()
+        {
+            return GetExamsNeedingExemptions().Count() > 0;
+        }
+
+        public IEnumerable<Exam> GetNeededExams()
+        {
+            return from ex in Education.Exams where !this.HasPassedExam(ex) && !this.HasRegisteredForExam(ex) select ex;
         }
 
         protected override void ReadRow(DataRow dr)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -8,13 +9,28 @@ using System.Threading.Tasks;
 
 namespace Classes.Model
 {
-    public class Education : Model
+    public class Education : Model, IDataErrorInfo
     {
         public static readonly string table = "Educations";
         public string Title { get; set; }
         public DateTime Created { get; set; }
         public ObservableCollection<Student> Students { get; set; }
         public ObservableCollection<Exam> Exams { get; set; }
+
+        public string Error
+        {
+            get { return null; }
+        }
+
+        public string this[string columnName]
+        {
+            get {
+                string result = null;
+                if (String.IsNullOrWhiteSpace(Title))
+                    result = "Title cannot be empty";
+                return result;
+            }
+        }
 
         public Education() : base(table){
             Students = new ObservableCollection<Student>();
@@ -23,7 +39,7 @@ namespace Classes.Model
 
         public Education(DataRow dr) : this()
         {
-            Data = dr;
+            ReadRow(dr);
         }
 
         public Education(string title) : this()
@@ -31,8 +47,16 @@ namespace Classes.Model
             Title = title;
         }
 
+        public bool IsValid()
+        {
+            if (String.IsNullOrWhiteSpace(Title))
+                return false;
+            return true;
+        }
+
         protected override void ReadRow(DataRow dr)
         {
+            data = dr;
             ID = (int)dr["id"];
             Title = (string)dr["title"];
             Created = (DateTime)dr["created_at"];

@@ -1,4 +1,3 @@
-C:\Users\Ceslovas\GradesRegistrationSystem\Classes\obj\Debug\Classes.csprojResolveAssemblyReference.cache
 C:\Users\Ceslovas\GradesRegistrationSystem\Classes\bin\Debug\Classes.dll
 C:\Users\Ceslovas\GradesRegistrationSystem\Classes\bin\Debug\Classes.pdb
 C:\Users\Ceslovas\GradesRegistrationSystem\Classes\obj\Debug\Classes.dll

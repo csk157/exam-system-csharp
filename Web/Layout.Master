@@ -1,0 +1,56 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Layout.master.cs" Inherits="Web.Layout" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title><asp:ContentPlaceHolder ID="TitleHolder" runat="server"></asp:ContentPlaceHolder></title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+</head>
+<body>
+    <form id="Master" runat="server">
+        <div class="navbar navbar-fixed-top navbar-inverse">
+            <div class="navbar-inner">
+                <div class="container">
+                    <asp:HyperLink ID="LinkHome" runat="server" NavigateUrl="~/Index.aspx"><img src="img/logo.png" title="Business Academy Aarhus" id="logo" /></asp:HyperLink>
+                    
+                    <div class="nav-collapse">
+                        <ul class="nav">
+                            <li runat="server" id="NavOverview"><asp:HyperLink runat="server" NavigateUrl="~/Index.aspx">Overview</asp:HyperLink></li>
+                            <li runat="server" id="NavReg"><asp:HyperLink runat="server" NavigateUrl="~/RegisterForExam.aspx">Register for exams</asp:HyperLink></li>
+                        </ul>
+
+                        <ul class="nav pull-right">
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <asp:Label ID="UserName" runat="server" Text=""></asp:Label>
+                                    <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <asp:HyperLink ID="EditProfile" NavigateUrl="~/EditUser.aspx" runat="server">Edit profile</asp:HyperLink></li>
+                                    <li>
+                                        <asp:LinkButton ID="LogUserOut" runat="server" OnClick="LogOut">Log Out</asp:LinkButton></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container main-content">
+            <div class="alert" id="Alert" runat="server" visible="false"></div>
+            <div class="row">
+                <asp:ContentPlaceHolder ID="Content" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+        </div>
+    </form>
+
+    <script src="js/jquery-1.10.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

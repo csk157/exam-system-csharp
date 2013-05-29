@@ -21,10 +21,14 @@ namespace Desktop
         private Student student;
         private bool create = true;
         private bool saveClosed = false;
+
         public CreateEditStudent()
         {
             InitializeComponent();
             Education.ItemsSource = Service.Instance.Educations;
+
+            Title = "Create student";
+
             Binding b = BindingOperations.GetBinding(CPR, TextBox.TextProperty);
             if (b != null)
                 b.ValidationRules.Add(new UniqueCprValidation());
@@ -33,6 +37,7 @@ namespace Desktop
         public CreateEditStudent(Student s) : this()
         {
             student = s;
+            Title = "Edit student";
             create = false;
             DataContext = student;
         }
@@ -69,7 +74,7 @@ namespace Desktop
 
         private void ClosedWindow(object sender, EventArgs e)
         {
-            if(!saveClosed)
+            if(!saveClosed && !create)
                 Service.Instance.Reset(student);
         }
     }

@@ -64,6 +64,11 @@ namespace Classes.Model
             return (from at in Attempts where !at.Happened() select at);
         }
 
+        public IEnumerable AttemptsBy(Student s)
+        {
+            return (from at in Attempts where at.Exam == this && at.Student == s select at);
+        }
+
         protected override void ReadRow(DataRow dr)
         {
             data = dr;

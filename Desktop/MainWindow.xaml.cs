@@ -28,6 +28,7 @@ namespace Desktop
             InitializeComponent();
             Educations.ItemsSource = Service.Instance.Educations;
             ExamEducations.ItemsSource = Service.Instance.Educations;
+            RequiringExemption.ItemsSource = Service.Instance.GetRequiringExemptionStudents();
         }
 
         private void OnEducationsSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -92,7 +93,7 @@ namespace Desktop
                 else
                 {
                     RegisterStudent.IsEnabled = false;
-                    if (Exams.SelectedValue != null && st.NeedsException(ex) && st.CanGetException(ex))
+                    if (Exams.SelectedValue != null && st.NeedsExemption(ex) && st.CanGetExemption(ex))
                         GiveExceptionButton.IsEnabled = true;
                     else
                         GiveExceptionButton.IsEnabled = false;
@@ -122,7 +123,7 @@ namespace Desktop
                 else
                 {
                     RegisterStudent.IsEnabled = false;
-                    if (Students.SelectedValue != null && st.NeedsException(ex) && st.CanGetException(ex))
+                    if (Students.SelectedValue != null && st.NeedsExemption(ex) && st.CanGetExemption(ex))
                         GiveExceptionButton.IsEnabled = true;
                     else
                         GiveExceptionButton.IsEnabled = false;
@@ -263,6 +264,7 @@ namespace Desktop
                     MessageBox.Show("Control numbers are correct");
 
                 Exam ex = (Exam)ExamExams.SelectedValue;
+                List<Model> toUpdate = new List<Model>();
                 foreach (Attempt a in ex.NotExamined())
                 {
                     TextBox tb = (TextBox)FindName("Attempt" + a.ID);
@@ -270,16 +272,17 @@ namespace Desktop
                     {
                         if(Attempt.allowedGrades.Contains(tb.Text)){
                             a.Grade = tb.Text;
-                            Service.Instance.Update(a);
+                            toUpdate.Add(a);
                             UnregisterName(tb.Name);
                         }
-
                     }
                 }
+                Service.Instance.Update(toUpdate.ToArray<Model>());
             }
 
             FillAttempts();
             ClearExam();
+            RefreshRequiringExemption();
         }
 
 
@@ -375,6 +378,56 @@ namespace Desktop
         private void Clear(object sender, RoutedEventArgs e)
         {
             ClearExam();
+        }
+
+        private void RequiringExemptionSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (RequiringExemption.SelectedValue != null)
+            {
+                Student s = (Student)RequiringExemption.SelectedValue;
+                RequiringExemptionExams.ItemsSource = s.GetExamsNeedingExemptions();
+            }
+            else
+            {
+                RequiringExemptionExams.ItemsSource = null;
+                RequiringGiveExemptionButton.IsEnabled = false;
+            }
+        }
+
+        private void RequiringExemptionExamSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (RequiringExemptionExams.SelectedValue != null)
+            {
+                Exam ex = (Exam)RequiringExemptionExams.SelectedValue;
+                Student st = (Student)RequiringExemption.SelectedValue;
+                PreviousAttempts.ItemsSource = ex.AttemptsBy((Student)RequiringExemption.SelectedValue);
+
+                RequiringGiveExemptionButton.IsEnabled = st.CanGetExemption(ex);
+            }
+            else
+            {
+                PreviousAttempts.ItemsSource = null;
+                RequiringGiveExemptionButton.IsEnabled = false;
+            }
+        }
+
+        private void RequiringGiveExemptionClick(object sender, RoutedEventArgs e)
+        {
+            if (RequiringExemption.SelectedValue != null && RequiringExemptionExams.SelectedValue != null)
+            {
+                Student st = (Student)RequiringExemption.SelectedValue;
+                Exam ex = (Exam)RequiringExemptionExams.SelectedValue;
+
+                Service.Instance.RegisterForExam(st, ex);
+                RefreshRequiringExemption();
+            }
+        }
+
+        private void RefreshRequiringExemption()
+        {
+            RequiringGiveExemptionButton.IsEnabled = false;
+            RequiringExemption.ItemsSource = Service.Instance.GetRequiringExemptionStudents();
+            RequiringExemptionExams.ItemsSource = null;
         }
     }
 }

@@ -38,12 +38,9 @@ namespace Classes.Model
             return Grade != null && allowedGrades.Contains(Grade) && !(new string[] { "SY", "EJ", "-3", "00" }).Contains(Grade);
         }
 
-        /**
-         * True if wasn's sick
-        */
         public bool IsTaken()
         {
-            return Grade != "SY";
+            return Grade != "SY" && !String.IsNullOrEmpty(Grade);
         }
 
         public bool Happened()

@@ -63,7 +63,14 @@ namespace Classes.Dao
 
         public void UpdateTable(string table)
         {
-            adapters[table].Update(data, table);
+            try
+            {
+                adapters[table].Update(data, table);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("There was an error when updating database");
+            }
         }
 
         private void AddToDataSet(string table, string sql, SqlConnection con)

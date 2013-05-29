@@ -108,13 +108,61 @@ namespace Classes.Service
             }
         }
 
-        public void Update(Model.Model m)
+        public void Update(params Model.Model[] models)
         {
-            m.BeforeSave();
-            m.Update();
-            UpdateTable(m.Table);
-            m.AfterSave();
+            if (!AreFromSameTable(models))
+                throw new Exception("Models should be from the same table");
 
+            if (models.Length > 0)
+            {
+                string table = models[0].Table;
+                foreach (Model.Model m in models)
+                {
+                    m.BeforeSave();
+                    m.Update();
+                }
+
+                UpdateTable(table);
+
+                foreach (Model.Model m in models)
+                    m.AfterSave();
+            }
+
+        }
+
+        private bool AreFromSameTable(Model.Model[] models)
+        {
+            if(models.Length > 0){
+                Model.Model first = models[0];
+                foreach(Model.Model m in models){
+                    if (m.Table != first.Table)
+                        return false;
+                   }
+             }
+            return true;
+        }
+
+        public Student Login(string cpr, string password)
+        {
+            var stds = (from st in Students where st.CPR == cpr && st.Password == password select st);
+            if (stds.Count() == 1)
+                return stds.First();
+            else
+                return null;
+        }
+
+        public Exam GetExamById(int id)
+        {
+            var exs = (from ex in Exams where ex.ID == id select ex);
+            if (exs.Count() != 0)
+                return exs.First();
+            else
+                return null;
+        }
+
+        public IEnumerable<Student> GetRequiringExemptionStudents()
+        {
+            return (from st in Students where st.RequiresExemptions() select st);
         }
 
         public Attempt RegisterForExam(Student s, Exam e)

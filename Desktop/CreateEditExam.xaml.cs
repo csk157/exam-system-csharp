@@ -24,6 +24,7 @@ namespace Desktop
         public CreateEditExam()
         {
             InitializeComponent();
+            Title = "Create exam";
             Educations.ItemsSource = Service.Instance.Educations;
         }
 
@@ -38,6 +39,7 @@ namespace Desktop
         public CreateEditExam(Exam e) : this()
         {
             exam = e;
+            Title = "Edit exam";
             create = false;
             DataContext = e;
         }
@@ -63,7 +65,7 @@ namespace Desktop
 
         private void ClosedWindow(object sender, EventArgs e)
         {
-            if (!saveClosed)
+            if (!saveClosed && !create)
                 Service.Instance.Reset(exam);
         }
     }

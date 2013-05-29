@@ -16,43 +16,52 @@ using System.Windows.Shapes;
 
 namespace Desktop
 {
-    /// <summary>
-    /// Interaction logic for CreateEditEducation.xaml
-    /// </summary>
     public partial class CreateEditEducation : Window
     {
+        private bool create = true;
+        private bool saveClosed = false;
         private Education education;
         public CreateEditEducation()
         {
             InitializeComponent();
+            Title = "Create education";
+            education = new Education();
+            DataContext = education;
         }
 
         public CreateEditEducation(Education e)
             : this()
         {
             education = e;
+            Title = "Edit education";
             this.DataContext = education;
+            create = false;
+            DataContext = education;
         }
 
         private void Save(object sender, RoutedEventArgs e)
         {
-            if (education == null)
-            { //Create
-                Education ed = new Education(Title.Text);
-                Service.Instance.Add(ed);
-            }
-            else
-            {
-                education.Update();
-                Service.Instance.UpdateTable("Educations");
-            }
+            if (!education.IsValid())
+                return;
 
+            if (create)
+                Service.Instance.Add(education);
+            else
+                Service.Instance.Update(education);
+
+            saveClosed = true;
             Close();
         }
 
         private void Cancel(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void ClosedWindow(object sender, EventArgs e)
+        {
+            if (!saveClosed && !create)
+                Service.Instance.Reset(education);
         }
     }
 }

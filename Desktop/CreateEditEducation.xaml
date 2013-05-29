@@ -1,13 +1,13 @@
 ﻿<Window x:Class="Desktop.CreateEditEducation"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="CreateEditEducation" Height="300" Width="300">
-        <StackPanel>
+        Title="Education" Height="134" Width="300" Closed="ClosedWindow">
+        <StackPanel Margin="5">
             <Label Content="Title"/>
-        <TextBox Name="Title" Height="23" TextWrapping="Wrap" Text="{Binding Path=Title}"/>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
+        <TextBox Height="23" TextWrapping="Wrap" Text="{Binding Path=Title, ValidatesOnDataErrors=True}" ToolTip="{Binding Path=(Validation.Errors).CurrentItem.ErrorContent, RelativeSource={x:Static RelativeSource.Self}}"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0" >
             <Button Content="Save" Width="75" Click="Save"/>
-            <Button Content="Cancel" Width="75" Click="Cancel"/>
+            <Button Content="Cancel" Width="75" Click="Cancel" Margin="5,0,0,0"/>
         </StackPanel>
     </StackPanel>
 
